@@ -3,31 +3,31 @@ class Entity {
   x = 0;
   y = 0;
   name = "";
-  speed = 1;
+  pathfinder;
+  path;
 
-  constructor(x, y, speed, maxTileType, name, world) {
+  constructor(x, y, maxTileType, name, world, pathfinder) {
     this.maxTileType = maxTileType;
-    this.speed = speed;
     this.name = name;
     this.x = x;
     this.y = y;
     this.world = world;
+    this.pathfinder = pathfinder;
   }
 
   move(x, y) {
-    x = x < 0 ? 0 : (x = x > this.world.getWidth() ? this.world.getWidth() : x);
-    y =
-      y < 0 ? 0 : (y = y > this.world.getHeight() ? this.world.getHeight() : y);
+    let cords = this.world.cordBound(x, y);
 
-    if (this.world.getTile(x, y) <= this.maxTileType) {
-      this.x = x;
-      this.y = y;
+    if (this.world.getTile(cords.x, cords.y) <= this.maxTileType) {
+      this.x = cords.x;
+      this.y = cords.y;
     }
   }
 
-  followPath() {
-
-
-    
+  update() {
+    let path = this.pathfinder.findPath();
+    if (path) {
+    } else {
+    }
   }
 }

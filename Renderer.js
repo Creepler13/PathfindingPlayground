@@ -1,12 +1,14 @@
 class Renderer {
   screen = document.getElementById("screen");
+  world;
 
   constructor(world) {
-    this.canvas = document.createElement("canvas");
-    this.canvas.width = 500;
-    this.canvas.height = 500;
+    while (this.screen.firstChild) {
+      this.screen.removeChild(this.screen.firstChild);
+    }
 
-    
-
+    this.world = world;
   }
+
+  update() {}
 }

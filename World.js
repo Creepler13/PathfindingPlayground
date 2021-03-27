@@ -4,18 +4,27 @@ class World {
   entitys = [];
 
   constructor(width, height) {
-    let temp = new Array(height);
-    temp.fill(0, 0);
-    this.map = new Array(width);
-    this.map.fill(temp, 0);
+    for (let x = 0; x < width; x++) {
+      let temp = [];
+      for (let y = 0; y < height; y++) {
+        temp.push(0);
+      }
+      this.map.push(temp);
+    }
 
     this.view.x = 0;
     this.view.y = 0;
-   
   }
 
   getTile(x, y) {
-    return this.map[x][y];
+    return this.map[x] ? this.map[x][y] : undefined;
+  }
+
+  cordBound(x, y) {
+    return {
+      x: x < 0 ? 0 : (x = x > this.getWidth() - 1 ? this.getWidth() - 1 : x),
+      y: y < 0 ? 0 : (y = y > this.getHeight() - 1 ? this.getHeight() - 1 : y),
+    };
   }
 
   getWidth() {
