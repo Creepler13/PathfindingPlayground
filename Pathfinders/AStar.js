@@ -108,7 +108,20 @@ class AStar extends Pathfinder {
     this.finished = false;
   }
 
-  draw(ctx, w, h) {
+  draw(ctx, w, h, extra) {
+    if (extra) {
+      for (const key in this.data) {
+        let point = this.data[key];
+        if (point.parent) {
+          ctx.beginPath();
+          ctx.moveTo(point.x * w + w / 2, point.y * h + h / 2);
+          ctx.lineTo(point.parent.x * w + w / 2, point.parent.y * h + h / 2);
+          ctx.stroke();
+          ctx.closePath();
+        }
+      }
+    }
+
     if (this.data != {}) {
       ctx.fillStyle = "blue";
       ctx.fillRect(
@@ -118,8 +131,9 @@ class AStar extends Pathfinder {
         h / 2
       );
 
+      
+      ctx.fillStyle = "green";
       ctx.beginPath();
-
       let point = this.getNextPoint();
       ctx.moveTo(point.x * w + w / 2, point.y * h + h / 2);
       while (point.parent) {

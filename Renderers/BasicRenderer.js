@@ -11,14 +11,17 @@ class BasicRenderer extends Renderer {
     this.w = this.canvas.width / this.world.getWidth();
 
     this.canvas.onclick = (e) => {
-      let x = Math.floor((e.pageX - this.canvas.offsetLeft) / this.w);
-      let y = Math.floor((e.pageY - this.canvas.offsetTop) / this.h);
+      if (modify) {
+        let x = Math.floor((e.pageX - this.canvas.offsetLeft) / this.w);
+        let y = Math.floor((e.pageY - this.canvas.offsetTop) / this.h);
 
-      world.setTile(x, y, world.getTile(x, y) == 0 ? 1 : 0);
+        world.setTile(x, y, world.getTile(x, y) == 0 ? 1 : 0);
 
-      pathFinder.reset();
-      pathFinder.pathTo(px, py, false);
-
+        pathFinder.reset();
+        pathFinder.pathTo(px, py, false);
+      } else {
+        pathFinder.next();
+      }
       rend.update();
     };
   }
@@ -45,7 +48,7 @@ class BasicRenderer extends Renderer {
       );
 
       if (entity.pathfinder) {
-        entity.pathfinder.draw(this.ctx, w, h);
+        entity.pathfinder.draw(this.ctx, w, h, true);
       }
     });
   }
