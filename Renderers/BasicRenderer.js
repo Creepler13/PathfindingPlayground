@@ -6,15 +6,27 @@ class BasicRenderer extends Renderer {
     this.canvas.height = 500;
     this.ctx = this.canvas.getContext("2d");
     this.screen.appendChild(this.canvas);
+
+    this.h = this.canvas.height / this.world.getHeight();
+    this.w = this.canvas.width / this.world.getWidth();
+
+    this.canvas.onclick = (e) => {
+      let x = Math.floor((e.pageX - this.canvas.offsetLeft) / this.w);
+      let y = Math.floor((e.pageY - this.canvas.offsetTop) / this.h);
+
+      world.setTile(x, y, world.getTile(x, y) == 0 ? 1 : 0);
+
+      pathFinder.reset();
+      pathFinder.pathTo(px, py, false);
+
+      rend.update();
+    };
   }
 
-  
-
-
   update() {
+    let w = this.w;
+    let h = this.h;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    let h = this.canvas.height / this.world.getHeight();
-    let w = this.canvas.width / this.world.getWidth();
 
     for (let x = 0; x < this.world.getWidth(); x++) {
       for (let y = 0; y < this.world.getHeight(); y++) {
@@ -31,25 +43,10 @@ class BasicRenderer extends Renderer {
         w / 2,
         h / 2
       );
-      this.ctx.fillStyle = "blue";
-      this.ctx.fillRect(
-        entity.pathfinder.goal.x * w + w / 4,
-        entity.pathfinder.goal.y * h + h / 4,
-        w / 2,
-        h / 2
-      );
 
-      this.ctx.beginPath();
-
-      let point = entity.pathfinder.getNextPoint();
-      this.ctx.moveTo(point.x * w + w / 2, point.y * h + h / 2);
-      while (point.parent) {
-        this.ctx.lineTo(point.parent.x * w + w / 2, point.parent.y * h + h / 2);
-        point = entity.pathfinder.data[point.parent.id];
+      if (entity.pathfinder) {
+        entity.pathfinder.draw(this.ctx, w, h);
       }
-
-      this.ctx.stroke();
-      this.ctx.closePath();
     });
   }
 }

@@ -7,6 +7,8 @@ class Pathfinder {
     this.world = world;
   }
 
+  reset() {}
+
   pathTo(x, y) {}
 
   draw(ctx) {}

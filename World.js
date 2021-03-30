@@ -3,11 +3,11 @@ class World {
   view = { x: 0, y: 0, width: 500, height: 500 };
   entitys = [];
 
-  constructor(width, height) {
+  constructor(width, height, rand) {
     for (let x = 0; x < width; x++) {
       let temp = [];
       for (let y = 0; y < height; y++) {
-        temp.push(0);
+        temp.push(rand ? Math.round(Math.random()) : 0);
       }
       this.map.push(temp);
     }

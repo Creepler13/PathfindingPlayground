@@ -7,7 +7,7 @@ class AStar extends Pathfinder {
 
   data = {};
 
-  pathTo(x, y) {
+  pathTo(x, y, step) {
     this.goal = this.world.cordBound(x, y);
 
     let curX = this.entity.x;
@@ -16,19 +16,38 @@ class AStar extends Pathfinder {
     this.data[curX + "," + curY] = {
       x: curX,
       y: curY,
+      id: curX + "," + curY,
       flagged: true,
-      value: this.dist(curX, curY, x, y),
+      value: this.dist(curX, curY, this.goal.y, this.goal.y),
       parentCount: 0,
     };
 
     this.expandTile(this.data[curX + "," + curY]);
 
-    let np = this.getNextPoint();
-    while (true) {
-      this.expandTile(np);
-      np = this.getNextPoint();
-      if (np.x == x && np.y == y) break;
+    if (!step) {
+      while (!this.finished) {
+        if (this.finished) return;
+        let np = this.getNextPoint();
+        if ((np.x == this.goal.x && np.y == this.goal.y) || !np) {
+          this.finished = true;
+          return;
+        }
+        this.expandTile(np);
+      }
     }
+  }
+
+  finished = false;
+
+  next() {
+    if (this.finished) return;
+    let np = this.getNextPoint();
+    if ((np.x == this.goal.x && np.y == this.goal.y) || !np) {
+      this.finished = true;
+      return;
+    }
+
+    this.expandTile(np);
   }
 
   expandTile(point) {
@@ -74,6 +93,9 @@ class AStar extends Pathfinder {
         p = this.data[key];
       }
     }
+    if (p == { value: 999999999 }) {
+      return false;
+    }
     return p;
   }
 
@@ -81,5 +103,32 @@ class AStar extends Pathfinder {
     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5;
   }
 
-  draw(ctx) {}
+  reset() {
+    this.data = {};
+    this.finished = false;
+  }
+
+  draw(ctx, w, h) {
+    if (this.data != {}) {
+      ctx.fillStyle = "blue";
+      ctx.fillRect(
+        this.goal.x * w + w / 4,
+        this.goal.y * h + h / 4,
+        w / 2,
+        h / 2
+      );
+
+      ctx.beginPath();
+
+      let point = this.getNextPoint();
+      ctx.moveTo(point.x * w + w / 2, point.y * h + h / 2);
+      while (point.parent) {
+        ctx.lineTo(point.parent.x * w + w / 2, point.parent.y * h + h / 2);
+        point = this.data[point.parent.id];
+      }
+
+      ctx.stroke();
+      ctx.closePath();
+    }
+  }
 }
