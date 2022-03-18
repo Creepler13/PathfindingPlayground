@@ -5,10 +5,13 @@ let pathFinder = new AStar(world.entitys[0], world);
 world.entitys[0].pathfinder = pathFinder;
 
 let rend = new BasicRenderer(world);
-rend.update();
+
+
 
 let modify = false;
 
 let px = 20;
 let py = 10;
 pathFinder.pathTo(px, py, true);
+
+setInterval(()=>{rend.update();},100)
