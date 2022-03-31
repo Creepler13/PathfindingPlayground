@@ -8,7 +8,7 @@ let rend = new BasicRenderer(world);
 
 
 
-let modify = false;
+let modify = true;
 
 let px = 20;
 let py = 10;
