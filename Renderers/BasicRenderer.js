@@ -48,7 +48,7 @@ class BasicRenderer extends Renderer {
       );
 
       if (entity.pathfinder) {
-        entity.pathfinder.draw(this.ctx, w, h, true);
+        entity.pathfinder.draw(this.ctx, w, h, false);
       }
     });
   }
