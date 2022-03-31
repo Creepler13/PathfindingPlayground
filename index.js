@@ -14,4 +14,4 @@ let px = 20;
 let py = 10;
 pathFinder.pathTo(px, py, true);
 
-setInterval(()=>{console.log("next");pathFinder.next(); rend.update();},100)
+setInterval(()=>{console.log("next");pathFinder.next(); rend.update();},50)
