@@ -1,4 +1,4 @@
-let world = new World(50, 50, true);
+let world = new World(50, 50, false);
 
 world.addEntity(0, 0, 0, "test");
 let pathFinder = new AStar(world.entitys[0], world);
